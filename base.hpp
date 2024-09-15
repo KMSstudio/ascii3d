@@ -15,8 +15,7 @@ public:
 
 class Angle {
 public:
-    float p;  // Phi: rotation in one direction
-    float t;  // Theta: rotation in another direction
+    float p, t;  // Phi, Theta
 
     Angle();
     Angle(float p, float t);

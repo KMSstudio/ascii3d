@@ -3,14 +3,7 @@
 
 #include <iostream>
 #include <vector>
-
-class Coor2d {
-public:
-    int x, y;
-
-    Coor2d();
-    Coor2d(int x, int y);
-};
+#include "base.hpp"
 
 class Pixel {
 private:

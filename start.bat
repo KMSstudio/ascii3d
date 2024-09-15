@@ -1,2 +1,2 @@
-g++ main.cpp screen.cpp -o screen_app
-screen_app.exe
+g++ main.cpp base.cpp screen.cpp -o ascii3d
+ascii3d.exe

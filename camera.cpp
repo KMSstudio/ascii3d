@@ -16,19 +16,19 @@ float Camera::getDepthMax() const { return depthMax; }
 int Camera::act(char move) {
     static const float unit = 2.0;
     switch (move) {
-        case 'a':
+        case 'a': case 'A':
             angle.p -= unit; break;
-        case 'd':
+        case 'd': case 'D':
             angle.p += unit; break;
-        case 'w':
+        case 'w': case 'W':
             angle.t -= unit; break;
-        case 's':
+        case 's': case 'S':
             angle.t += unit; break;
-        case 'i':
+        case 'i': case 'I':
             depth += unit;
             if (depth > depthMax) { depth = depthMax; }
             break;
-        case 'j':
+        case 'j': case 'J':
             depth -= unit;
             if (depth < depthMin) { depth = depthMin; }
             break;

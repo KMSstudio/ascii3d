@@ -11,10 +11,11 @@
                 "${fileDirname}\\base.cpp",
                 "${fileDirname}\\screen.cpp",
                 "${fileDirname}\\camera.cpp",
-                "${fileDirname}\\body.cpp",
+                "${fileDirname}\\face.cpp",
                 "-g",
                 "-o",
-                "${fileDirname}\\${fileBasenameNoExtension}.exe"
+                // "${fileDirname}\\${fileBasenameNoExtension}.exe"
+                "${fileDirname}\\ascii3d.exe"
             ],
             "options": {
                 "cwd": "c:\\mingw64\\bin"

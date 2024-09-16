@@ -42,11 +42,12 @@ public:
     virtual int project(const Camera& camera, const float unit, Screen& screen) const;
 };
 
-#define DEFAULT_CH_SQ   '@'
+#define SQ_DEFAULT_CH   '@'
+#define SQ_FILL_GAP     1.0
 class Square : public Face {
 public:
-    Square(char ch=DEFAULT_CH_SQ);
-    Square(const Coor& coor1, const Coor& coor2, const Coor& coor3, char ch=DEFAULT_CH_SQ);
+    Square(char ch=SQ_DEFAULT_CH);
+    Square(const Coor& coor1, const Coor& coor2, const Coor& coor3, char ch=SQ_DEFAULT_CH);
 
     int project(const Camera& camera, const float unit, Screen& screen) const override;
 };

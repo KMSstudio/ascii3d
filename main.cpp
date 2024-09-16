@@ -1,4 +1,4 @@
-#include "body.hpp"  // Coor, Angle 클래스 포함
+#include "face.hpp"  // Coor, Angle 클래스 포함
 #include "screen.hpp"  // Screen 클래스 포함
 #include "camera.hpp"  // Camera 클래스 포함
 #include <iostream>
@@ -16,7 +16,11 @@ int main() {
     Coor point7(3.0f, 3.0f, 5.0f);
     Coor point8(-3.0f, 3.0f, 5.0f);
 
-    Square square(Coor(-3.0f, -3.0f, 0.0f), Coor(-3.0f, 3.0f, 0.0f), Coor(3.0f, -3.0f, 0.0f), '*');
+    Square square1(Coor(-3.0f, -3.0f, 5.0f), Coor(-3.0f, 3.0f, 5.0f), Coor(3.0f, -3.0f, 5.0f), '&');
+    Square square2(Coor(-3.0f, -3.0f, 5.0f), Coor(-3.0f, -3.0f, 0.0f), Coor(3.0f, -3.0f, 5.0f), '~');
+
+    square1.rotate(Angle(0.0f, 0.0f));
+    square2.rotate(Angle(0.0f, 0.0f));
 
     float unit = sqrtf((10*10)/(5*5*2)) * (3.0f + 10.0f);
     // sqrt((screen.center.x*screen.center.y / space.x*space.y)*arearatio) * (space.z+camera.depth)
@@ -27,16 +31,17 @@ int main() {
 
     char pixelChar = '*';
     if (point1.project(camera, pixelChar, unit, screen) == 0) {
-        // point2.project(camera, pixelChar, unit, screen);
-        // point3.project(camera, pixelChar, unit, screen);
-        // point4.project(camera, pixelChar, unit, screen);
+        point2.project(camera, pixelChar, unit, screen);
+        point3.project(camera, pixelChar, unit, screen);
+        point4.project(camera, pixelChar, unit, screen);
         
-        point5.project(camera, '&', unit, screen);
-        point6.project(camera, '&', unit, screen);
-        point7.project(camera, '&', unit, screen);
-        point8.project(camera, '&', unit, screen);
+        // point5.project(camera, '&', unit, screen);
+        // point6.project(camera, '&', unit, screen);
+        // point7.project(camera, '&', unit, screen);
+        // point8.project(camera, '&', unit, screen);
 
-        square.project(camera, unit, screen);
+        square1.project(camera, unit, screen);
+        square2.project(camera, unit, screen);
 
         std::cout << "Point projected successfully on screen.\n";
         screen.print();  // 스크린에 투영된 결과를 출력

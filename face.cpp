@@ -1,4 +1,4 @@
-#include "body.hpp"
+#include "face.hpp"
 #include <cmath>
 #include <algorithm>
 
@@ -15,15 +15,15 @@ Coor Coor::unit(void) const { return (*this)/this->abs(); }
 Coor Coor::rotate(const Angle angle) const {
     Coor result = *this;
     float cosP = cos(angle.p), sinP = sin(angle.p);
-    float newX = result.x * cosP - result.y * sinP;
-    float newY = result.x * sinP + result.y * cosP;
+    float newX = result.x * cosP - result.z * sinP;
+    float newZ = result.x * sinP + result.z * cosP;
     result.x = newX;
-    result.y = newY;
+    result.z = newZ;
 
     float cosT = cos(angle.t), sinT = sin(angle.t);
-    float newZ = result.z * cosT - result.y * sinT;
-    result.y = result.z * sinT + result.y * cosT;
-    result.z = newZ;
+    float newY = result.y * cosT + result.z * sinT;
+    result.z = -result.y * sinT + result.z * cosT;
+    result.y = newY;
 
     return result;
 }
@@ -49,7 +49,7 @@ int Coor::position(const Screen& screen, const float cameraDepth, const float un
     if (z >= cameraDepth) { return -1; }
     
     pos.x = (int)(screen.getCenter().x + unit*(x*depthInv));
-    pos.y = (int)(screen.getCenter().y + unit*(y*depthInv));
+    pos.y = (int)(screen.getCenter().y - unit*(y*depthInv));
 
     if (pos.x < 0 || pos.x >= screen.getSize().x) { return -1; }
     if (pos.y < 0 || pos.y >= screen.getSize().y) { return -1; }
@@ -62,9 +62,7 @@ int Coor::project(const Camera& camera, const char ch, const float unit, Screen&
     Coor2d pos;
 
     if (rotated.position(screen, camera.depth, unit, pos) == -1) { return -1; }
-    else { 
-        std::cout << "x pos: " << pos.x << "y pos: " << pos.y << std::endl;
-        screen.setPixel(pos, Pixel(ch, rotated.z + camera.depth)); return 0; }
+    else { screen.setPixel(pos, Pixel(ch, rotated.z + camera.depth)); return 0; }
 }
 
 // Operator overloads
@@ -108,12 +106,25 @@ Square::Square(const Coor& coor1, const Coor& coor2, const Coor& coor3, char ch)
 
 int Square::project(const Camera& camera, const float unit, Screen& screen) const {
     int res = 0;
-    Coor lastP = coor[2] + (coor[1]-coor[0]);
 
-    float Z = std::max({coor[0].z, coor[1].z, coor[2].z, lastP.z});
-    float fillGap = 0.8 * (Z + camera.depth) / unit;
+    Coor lastP = coor[2] + (coor[1] - coor[0]);
+    float Z = std::min({coor[0].z, coor[1].z, coor[2].z, lastP.z});
+    float fillGap = SQ_FILL_GAP * (Z + camera.depth) / unit;
+    
+    Coor v[2] = { coor[1] - coor[0], coor[2] - coor[0] };
+    Coor enc[2] = { v[0].unit() * fillGap, v[1].unit() * fillGap };
 
-    for (const auto& c : coor) { if (c.project(camera, ch, unit, screen) == -1) { res = -1; } }
-    if (lastP.project(camera, ch, unit, screen) == -1) { res = -1; }
+    float vs[2] = { v[0].abs(), v[1].abs() };
+    float encs[2] = { enc[0].abs(), enc[1].abs() };
+
+    int i, j;
+
+    for (i=0; encs[0]*i <= vs[0]; i++) {
+        for (j=0; encs[1]*j <= vs[1]; j++) {
+            Coor current = coor[0] + (enc[0] * i) + (enc[1] * j);
+            if (current.project(camera, ch, unit, screen) == -1) { res = -1; }
+        }
+    }
+    
     return res;
 }

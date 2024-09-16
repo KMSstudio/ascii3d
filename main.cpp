@@ -1,54 +1,74 @@
-#include "face.hpp"  // Coor, Angle 클래스 포함
-#include "screen.hpp"  // Screen 클래스 포함
-#include "camera.hpp"  // Camera 클래스 포함
+#include "body.hpp"
+#include "camera.hpp"
+#include "screen.hpp"
 #include <iostream>
-#include <cmath>
+#include <conio.h>
+#include <windows.h>
 
 int main() {
-    // Coor 객체 초기화
-    Coor point1(-3.0f, -3.0f, 0.0f);
-    Coor point2(3.0f, -3.0f, 0.0f);
-    Coor point3(3.0f, 3.0f, 0.0f);
-    Coor point4(-3.0f, 3.0f, 0.0f);
+    // 시작 좌표 st와 3개의 벡터 정의
+    Coor st(0, 0, 0);
+    Coor v0(1, 0, 0);
+    Coor v1(0, 1, 0);
+    Coor v2(0, 0, 1);
+    
+    // Cube 객체 생성 (문자열 길이가 6 미만일 때)
+    std::string str1 = "=.*&%]";  // 각 면에 동일한 문자 'A'
+    Cube cube1(st, v0, v1, v2, str1);
+    cube1.rotate(Angle(0.6f, 0.3f));
 
-    Coor point5(-3.0f, -3.0f, 5.0f);
-    Coor point6(3.0f, -3.0f, 5.0f);
-    Coor point7(3.0f, 3.0f, 5.0f);
-    Coor point8(-3.0f, 3.0f, 5.0f);
+    // Cube 객체 생성 (문자열 길이가 6 이상일 때)
+    std::string str2 = "=.*&%]";  // 각 면에 다른 문자
+    Cube cube2(st, -v0, -v1, -v2, str2);
+    cube2.rotate(Angle(0.6f, 0.3f));
 
-    Square square1(Coor(-3.0f, -3.0f, 5.0f), Coor(-3.0f, 3.0f, 5.0f), Coor(3.0f, -3.0f, 5.0f), '&');
-    Face* sq1 = &square1;
-    // Square square2(Coor(-3.0f, -3.0f, 5.0f), Coor(-3.0f, -3.0f, 0.0f), Coor(3.0f, -3.0f, 5.0f), '~');
-    Square square2(Coor(-3.0f, -3.0f, 5.0f), Coor(-3.0f, -3.0f, 0.0f), Coor(3.0f, -3.0f, 5.0f), '~');
+    // Camera, Screen 객체 생성
+    Camera camera(25, 1, 50);  // depth = 5, 최소/최대 depth는 각각 1, 10
+    Screen screen(Coor2d(40, 40));  // 스크린의 크기 (80x40)
 
-    square1.rotate(Angle(0.0f, 0.0f));
-    square2.rotate(Angle(0.0f, 0.0f));
-
-    float unit = sqrtf((10*10)/(5*5*2)) * (3.0f + 10.0f);
+    float unit = sqrtf((40*40)/(2*2*2)) * (2.0f + 20.0f);
     // sqrt((screen.center.x*screen.center.y / space.x*space.y)*arearatio) * (space.z+camera.depth)
 
-    Camera camera(10.0f, 1.0f, 20.0f);  // 카메라 깊이 10, 최소 깊이 1, 최대 깊이 20
-    Screen screen(Coor2d(20, 20));  // 80x40 크기의 스크린 생성
-    std::cout << unit << std::endl;
+    // 큐브 초기 출력
+    cube1.project(camera, unit, screen);
+    cube2.project(camera, unit, screen);
+    screen.print();
 
-    char pixelChar = '*';
-    if (point1.project(camera, pixelChar, unit, screen) == 0) {
-        point2.project(camera, pixelChar, unit, screen);
-        point3.project(camera, pixelChar, unit, screen);
-        point4.project(camera, pixelChar, unit, screen);
-        
-        // point5.project(camera, '&', unit, screen);
-        // point6.project(camera, '&', unit, screen);
-        // point7.project(camera, '&', unit, screen);
-        // point8.project(camera, '&', unit, screen);
+    // 메인 루프: 키 입력을 받아 큐브 회전
+    Angle rotation(0.0f, 0.0f);  // 회전 각도 초기화
+    while (true) {
+        if (_kbhit()) {  // 키보드 입력이 있을 때
+            char input = _getch();  // 키 입력 받기
 
-        sq1->project(camera, unit, screen);
-        square2.project(camera, unit, screen);
+            // 'a', 'd', 'w', 's' 키에 따라 회전 각도 설정
+            switch (input) {
+                case 'a':
+                    rotation = Angle(-0.1f, 0.0f);  // 왼쪽으로 회전
+                    break;
+                case 'd':
+                    rotation = Angle(0.1f, 0.0f);   // 오른쪽으로 회전
+                    break;
+                case 'w':
+                    rotation = Angle(0.0f, 0.1f);   // 위로 회전
+                    break;
+                case 's':
+                    rotation = Angle(0.0f, -0.1f);  // 아래로 회전
+                    break;
+                case 'q':  // 프로그램 종료
+                    return 0;
+            }
 
-        std::cout << "Point projected successfully on screen.\n";
-        screen.print();  // 스크린에 투영된 결과를 출력
-    } else {
-        std::cout << "Point projection failed.\n";
+            // 큐브 회전 수행
+            cube1.rotate(rotation, 0);
+            cube2.rotate(rotation, 0);
+
+            // 화면 갱신
+            system("cls");
+            screen = Screen(Coor2d(40, 40));
+            cube1.project(camera, unit, screen);
+            cube2.project(camera, unit, screen);
+            screen.print();
+        }
     }
 
     return 0;

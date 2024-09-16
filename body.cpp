@@ -1,0 +1,72 @@
+#include "body.hpp"
+#include <vector>
+#include <algorithm>
+#include <string>
+
+// ********************************** /&
+//                Body                //
+// ********************************** //
+
+Body::Body() : center(0, 0, 0) {
+    coor[0] = Coor(0, 0, 0);
+    coor[1] = Coor(1, 1, 1);
+}
+
+Body::~Body() { for (auto f : face) { delete f; } }
+
+// (0, 0, 0) or this->center
+void Body::rotate(const Angle angle, const int byCenter) {
+    if (byCenter) {
+        for (auto& f : face) { f->rotate(center, angle); }
+        coor[0] = coor[0].rotate(center, angle);
+        coor[1] = coor[1].rotate(center, angle);
+        center = center.rotate(center, angle);
+    }
+    else {
+        for (auto& f : face) { f->rotate(angle); }
+        coor[0] = coor[0].rotate(angle);
+        coor[1] = coor[1].rotate(angle);
+        center = center.rotate(angle);
+    }
+}
+
+// Parameter center
+void Body::rotate(const Coor& center, const Angle angle) {
+    for (auto& f : face) { f->rotate(center, angle); }
+    coor[0] = coor[0].rotate(center, angle);
+    coor[1] = coor[1].rotate(center, angle);
+    this->center = this->center.rotate(center, angle);
+}
+
+int Body::project(const Camera& camera, const float unit, Screen& screen) {
+    int res = 0;
+    for (auto& f : face) {
+        if (f->project(camera, unit, screen) == -1) { res = -1; } }
+    return res;
+}
+
+// ********************************** /&
+//                Cube                //
+// ********************************** //
+
+Cube::Cube(const Coor& st, const Coor& v0, const Coor& v1, const Coor& v2, const std::string& str) {
+    Coor fn = st + v0 + v1 + v2;
+    _initFace(st, fn, v0, v1, v2, str);
+}
+
+void Cube::_initFace(const Coor& st, const Coor& fn, const Coor& v0, const Coor& v1, const Coor& v2, const std::string& str) {
+    char faceChars[6];
+
+    coor[0] = st; coor[1] = fn;
+    center = (st + fn) / 2;
+
+    if (str.length() >= 6) { for (int i=0; i<6; i++) { faceChars[i] = str[i]; } }
+    else { std::fill(std::begin(faceChars), std::end(faceChars), str[0]); }
+
+    face.push_back(new Square(st, v0, v1, faceChars[0]));
+    face.push_back(new Square(st, v0, v2, faceChars[1]));
+    face.push_back(new Square(st, v1, v2, faceChars[2]));
+    face.push_back(new Square(fn, -v0, -v1, faceChars[3]));
+    face.push_back(new Square(fn, -v0, -v2, faceChars[4]));
+    face.push_back(new Square(fn, -v1, -v2, faceChars[5]));
+}

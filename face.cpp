@@ -71,6 +71,8 @@ Coor Coor::operator-(const Coor& other) const { return Coor(x - other.x, y - oth
 Coor Coor::operator*(float scalar) const { return Coor(x * scalar, y * scalar, z * scalar); }
 Coor Coor::operator/(float scalar) const { return Coor(x / scalar, y / scalar, z / scalar); }
 
+Coor Coor::operator-() const { return (*this)*(-1); }
+
 // ********************************** /&
 //                Face                //
 // ********************************** //
@@ -83,7 +85,8 @@ void Face::rotate(const Coor& center, const Angle angle) {
 
 int Face::project(const Camera& camera, const float unit, Screen& screen) const {
     int res = 0;
-    for (const auto& c : coor) { if (c.project(camera, ch, unit, screen) == -1) { res = -1; } }
+    for (const auto& c : coor) {
+        if (c.project(camera, ch, unit, screen) == -1) { res = -1; } }
     return res;
 }
 
@@ -97,11 +100,10 @@ Square::Square(char ch) : Face(ch, 3) {
     coor[2] = Coor(0, 1, 0);
 }
 
-Square::Square(const Coor& coor1, const Coor& coor2, const Coor& coor3, char ch)
-    : Face(ch, 3) {
-    coor[0] = coor1;
-    coor[1] = coor2;
-    coor[2] = coor3;
+Square::Square(const Coor& st, const Coor& v0, const Coor& v1, char ch) : Face(ch, 3) {
+    coor[0] = st;
+    coor[1] = st + v0;
+    coor[2] = st + v1;
 }
 
 int Square::project(const Camera& camera, const float unit, Screen& screen) const {
@@ -139,11 +141,10 @@ Triangle::Triangle(char ch) : Face(ch, 3) {
     coor[2] = Coor(0, 1, 0);
 }
 
-Triangle::Triangle(const Coor& coor1, const Coor& coor2, const Coor& coor3, char ch)
-    : Face(ch, 3) {
-    coor[0] = coor1;
-    coor[1] = coor2;
-    coor[2] = coor3;
+Triangle::Triangle(const Coor& st, const Coor& v0, const Coor& v1, char ch) : Face(ch, 3) {
+    coor[0] = st;
+    coor[1] = st + v0;
+    coor[2] = st + v1;
 }
 
 int Triangle::project(const Camera& camera, const float unit, Screen& screen) const {

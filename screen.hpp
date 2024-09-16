@@ -36,6 +36,7 @@ public:
     void setPixel(const Coor2d& pos, const Pixel& pixel);
     
     Coor2d getCenter() const;
+    Coor2d getSize() const;
 
     int print(const int prtByDepth = 0) const;
 };

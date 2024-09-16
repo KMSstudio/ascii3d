@@ -43,6 +43,7 @@ char Screen::prtPixel(const Coor2d& pos) const { return getPixel(pos).get(); }
 void Screen::setPixel(const Coor2d& pos, const Pixel& pixel) { pixels[pos.x + pos.y * size.x].set(pixel); }
 
 Coor2d Screen::getCenter() const { return this->center; }
+Coor2d Screen::getSize() const {return this->size; }
 
 int Screen::print(const int prtByDepth) const {
     for (int y = 0; y < this->size.y; ++y) {

@@ -128,3 +128,45 @@ int Square::project(const Camera& camera, const float unit, Screen& screen) cons
     
     return res;
 }
+
+// ********************************************* /&
+//                Triangle(:Face)                //
+// ********************************************* //
+
+Triangle::Triangle(char ch) : Face(ch, 3) {
+    coor[0] = Coor(0, 0, 0);
+    coor[1] = Coor(1, 0, 0);
+    coor[2] = Coor(0, 1, 0);
+}
+
+Triangle::Triangle(const Coor& coor1, const Coor& coor2, const Coor& coor3, char ch)
+    : Face(ch, 3) {
+    coor[0] = coor1;
+    coor[1] = coor2;
+    coor[2] = coor3;
+}
+
+int Triangle::project(const Camera& camera, const float unit, Screen& screen) const {
+    int res = 0;
+
+    Coor lastP = coor[2] + (coor[1] - coor[0]);
+    float Z = std::min({coor[0].z, coor[1].z, coor[2].z, lastP.z});
+    float fillGap = TR_FILL_GAP * (Z + camera.depth) / unit;
+    
+    Coor v[2] = { coor[1] - coor[0], coor[2] - coor[0] };
+    Coor enc[2] = { v[0].unit() * fillGap, v[1].unit() * fillGap };
+
+    float vs[2] = { v[0].abs(), v[1].abs() };
+    float encs[2] = { enc[0].abs(), enc[1].abs() };
+
+    int i, j;
+
+    for (i=0; encs[0]*i <= vs[0]; i++) {
+        for (j=0; (i*encs[0]/vs[0]) + (j*encs[1]/vs[1]) <= 1.0; j++) {
+            Coor current = coor[0] + (enc[0] * i) + (enc[1] * j);
+            if (current.project(camera, ch, unit, screen) == -1) { res = -1; }
+        }
+    }
+    
+    return res;
+}

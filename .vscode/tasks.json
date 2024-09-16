@@ -15,7 +15,7 @@
                 "-g",
                 "-o",
                 // "${fileDirname}\\${fileBasenameNoExtension}.exe"
-                "${fileDirname}\\ascii3d.exe"
+                "${fileDirname}\\main.exe"
             ],
             "options": {
                 "cwd": "c:\\mingw64\\bin"

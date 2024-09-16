@@ -17,6 +17,8 @@ int main() {
     Coor point8(-3.0f, 3.0f, 5.0f);
 
     Square square1(Coor(-3.0f, -3.0f, 5.0f), Coor(-3.0f, 3.0f, 5.0f), Coor(3.0f, -3.0f, 5.0f), '&');
+    Face* sq1 = &square1;
+    // Square square2(Coor(-3.0f, -3.0f, 5.0f), Coor(-3.0f, -3.0f, 0.0f), Coor(3.0f, -3.0f, 5.0f), '~');
     Square square2(Coor(-3.0f, -3.0f, 5.0f), Coor(-3.0f, -3.0f, 0.0f), Coor(3.0f, -3.0f, 5.0f), '~');
 
     square1.rotate(Angle(0.0f, 0.0f));
@@ -40,7 +42,7 @@ int main() {
         // point7.project(camera, '&', unit, screen);
         // point8.project(camera, '&', unit, screen);
 
-        square1.project(camera, unit, screen);
+        sq1->project(camera, unit, screen);
         square2.project(camera, unit, screen);
 
         std::cout << "Point projected successfully on screen.\n";

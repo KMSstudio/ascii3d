@@ -16,25 +16,28 @@ int main() {
     Coor point7(3.0f, 3.0f, 5.0f);
     Coor point8(-3.0f, 3.0f, 5.0f);
 
+    Square square(Coor(-3.0f, -3.0f, 0.0f), Coor(-3.0f, 3.0f, 0.0f), Coor(3.0f, -3.0f, 0.0f), '*');
+
     float unit = sqrtf((10*10)/(5*5*2)) * (3.0f + 10.0f);
     // sqrt((screen.center.x*screen.center.y / space.x*space.y)*arearatio) * (space.z+camera.depth)
 
-    // 카메라 생성 및 테스트
     Camera camera(10.0f, 1.0f, 20.0f);  // 카메라 깊이 10, 최소 깊이 1, 최대 깊이 20
     Screen screen(Coor2d(20, 20));  // 80x40 크기의 스크린 생성
     std::cout << unit << std::endl;
 
-    // Coor 객체를 스크린에 투영하는 테스트
     char pixelChar = '*';
     if (point1.project(camera, pixelChar, unit, screen) == 0) {
-        point2.project(camera, pixelChar, unit, screen);
-        point3.project(camera, pixelChar, unit, screen);
-        point4.project(camera, pixelChar, unit, screen);
+        // point2.project(camera, pixelChar, unit, screen);
+        // point3.project(camera, pixelChar, unit, screen);
+        // point4.project(camera, pixelChar, unit, screen);
         
         point5.project(camera, '&', unit, screen);
         point6.project(camera, '&', unit, screen);
         point7.project(camera, '&', unit, screen);
         point8.project(camera, '&', unit, screen);
+
+        square.project(camera, unit, screen);
+
         std::cout << "Point projected successfully on screen.\n";
         screen.print();  // 스크린에 투영된 결과를 출력
     } else {

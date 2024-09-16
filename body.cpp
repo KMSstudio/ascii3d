@@ -53,7 +53,7 @@ int Coor::position(const Screen& screen, const float cameraDepth, const float un
     return 0;
 }
 
-int Coor::project(const Camera& camera, const char ch, const float unit, Screen& screen) {
+int Coor::project(const Camera& camera, const char ch, const float unit, Screen& screen) const {
     Coor rotated = this->rotate(camera.angle);
     Coor2d pos;
 
@@ -67,3 +67,44 @@ int Coor::project(const Camera& camera, const char ch, const float unit, Screen&
 Coor Coor::operator+(const Coor& other) const { return Coor(x + other.x, y + other.y, z + other.z); }
 Coor Coor::operator-(const Coor& other) const { return Coor(x - other.x, y - other.y, z - other.z); }
 Coor Coor::operator*(float scalar) const { return Coor(x * scalar, y * scalar, z * scalar); }
+
+// ********************************** /&
+//                Face                //
+// ********************************** //
+
+void Face::rotate(const Angle angle) {
+    for (auto& c : coor) { c = c.rotate(angle); } }
+void Face::rotate(const Coor& center, const Angle angle) {
+    for (auto& c : coor) { c = c.rotate(center, angle); } }
+//
+
+int Face::project(const Camera& camera, const float unit, Screen& screen) const {
+    int res = 0;
+    for (const auto& c : coor) { if (c.project(camera, ch, unit, screen) == -1) { res = -1; } }
+    return res;
+}
+
+// ******************************************* /&
+//                Square(:Face)                //
+// ******************************************* //
+
+Square::Square(char ch) : Face(ch, 3) {
+    coor[0] = Coor(0, 0, 0);
+    coor[1] = Coor(1, 0, 0);
+    coor[2] = Coor(0, 1, 0);
+}
+
+Square::Square(const Coor& coor1, const Coor& coor2, const Coor& coor3, char ch)
+    : Face(ch, 3) {
+    coor[0] = coor1;
+    coor[1] = coor2;
+    coor[2] = coor3;
+}
+
+int Square::project(const Camera& camera, const float unit, Screen& screen) const {
+    int res = 0;
+    Coor lastP = coor[2] + (coor[1]-coor[0]);
+    for (const auto& c : coor) { if (c.project(camera, ch, unit, screen) == -1) { res = -1; } }
+    if (lastP.project(camera, ch, unit, screen) == -1) { res = -1; }
+    return res;
+}

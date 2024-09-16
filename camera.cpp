@@ -17,7 +17,7 @@ Angle Camera::getAngle() const { return angle; }
 float Camera::getDepth() const { return depth; }
 
 int Camera::act(char move) {
-    static const float unit = 2.0;
+    static const float unit = 3.0;
     switch (move) {
         case 'a': case 'A':
             angle.p -= unit; break;

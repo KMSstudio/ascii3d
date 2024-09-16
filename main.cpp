@@ -12,18 +12,21 @@ int main() {
     Coor v1(0, 1, 0);
     Coor v2(0, 0, 1);
     
-    std::string str1 = "=.*&%]";  // 각 면에 동일한 문자 'A'
+    std::string str1 = "=.*@#;";  // 각 면에 동일한 문자 'A'
     Cube cube1(st, v0, v1, v2, str1);
     cube1.rotate(Angle(0.6f, 0.3f));
 
-    std::string str2 = "=.*&%]";  // 각 면에 다른 문자
+    std::string str2 = "=.*@#;";  // 각 면에 다른 문자
     Cube cube2(st, -v0, -v1, -v2, str2);
     cube2.rotate(Angle(0.6f, 0.3f));
 
-    std::string str3 = "=.*&%]";  // 각 면에 다른 문자
+    std::string str3 = "=.*@#;";  // 각 면에 다른 문자
     Cube cube3(st-(v1/2), v0/2, v1/2, v2/2, str3);
     // cube2.rotate(Angle(0.6f, 0.3f));
     cube3.rotate(Angle(0.6f, 0.3f));
+
+    Triangle triangle(Coor(0.5, -1, 0.5), Coor(0.5, 0.5, 0), Coor(0, 0.5, 0.5), '@');
+    triangle.rotate(Angle(0.6f, 0.3f));
 
     // Camera, Screen 객체 생성
     Camera camera(25, 1, 50);  // depth = 5, 최소/최대 depth는 각각 1, 10
@@ -58,7 +61,15 @@ int main() {
                 case 's':
                     rotation = Angle(0.0f, +0.25f);  // 아래로 회전
                     break;
-                case 'q':  // 프로그램 종료
+                case 'i':
+                    rotation = Angle(0.0f, +0.0f);
+                    camera.act('i');
+                    break;
+                case 'j':
+                    rotation = Angle(0.0f, +0.0f);
+                    camera.act('j');
+                    break;
+                case 'q':
                     return 0;
             }
 
@@ -66,6 +77,7 @@ int main() {
             cube1.rotate(rotation, 0);
             cube2.rotate(rotation, 0);
             cube3.rotate(rotation, 0);
+            triangle.rotate(rotation);
 
             // 화면 갱신
             system("cls");
@@ -73,6 +85,7 @@ int main() {
             cube1.project(camera, unit, screenXor);
             cube2.project(camera, unit, screenXor);
             cube3.project(camera, unit, screenXor);
+            triangle.project(camera, unit, screenXor);
             // screen.prtXor(screenXor);
             std::cout << screenXor.prtExp() << std::endl;
         }

@@ -42,9 +42,11 @@ Pixel Screen::getPixel(const Coor2d& pos) const { return pixels[pos.x + pos.y * 
 char Screen::prtPixel(const Coor2d& pos) const { return getPixel(pos).get(); }
 void Screen::setPixel(const Coor2d& pos, const Pixel& pixel) { pixels[pos.x + pos.y * size.x].set(pixel); }
 
+Coor2d Screen::getCenter() const { return this->center; }
+
 int Screen::print(const int prtByDepth) const {
-    for (int y = 0; y < size.y; ++y) {
-        for (int x = 0; x < size.x; ++x) {
+    for (int y = 0; y < this->size.y; ++y) {
+        for (int x = 0; x < this->size.x; ++x) {
             std::cout << prtPixel(Coor2d(x, y)); }
         std::cout << std::endl;
     }

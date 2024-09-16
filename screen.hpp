@@ -34,6 +34,8 @@ public:
     Pixel getPixel(const Coor2d& pos) const;
     char prtPixel(const Coor2d& pos) const;
     void setPixel(const Coor2d& pos, const Pixel& pixel);
+    
+    Coor2d getCenter() const;
 
     int print(const int prtByDepth = 0) const;
 };

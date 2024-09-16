@@ -4,9 +4,11 @@
 #include "base.hpp"
 
 class Camera {
-private:
+public:
     Angle angle;
     float depth;
+
+private:
     float depthMin;
     float depthMax;
 
@@ -18,6 +20,9 @@ public:
     
     void setDepthMax(float depthMax);
     float getDepthMax() const;
+
+    Angle getAngle() const;
+    float getDepth() const;
     
     int act(char move);
     void reset(float depth = 100);

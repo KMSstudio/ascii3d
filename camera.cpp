@@ -13,6 +13,9 @@ float Camera::getDepthMin() const { return depthMin; }
 void Camera::setDepthMax(float newDepthMax) { depthMax = newDepthMax; }
 float Camera::getDepthMax() const { return depthMax; }
 
+Angle Camera::getAngle() const { return angle; }
+float Camera::getDepth() const { return depth; }
+
 int Camera::act(char move) {
     static const float unit = 2.0;
     switch (move) {

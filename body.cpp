@@ -1,5 +1,6 @@
 #include "body.hpp"
 #include <cmath>
+#include <algorithm>
 
 // ********************************** /&
 //                Coor                //
@@ -7,6 +8,9 @@
 
 Coor::Coor() : x(0), y(0), z(0) {}
 Coor::Coor(float x, float y, float z) : x(x), y(y), z(z) {}
+
+float Coor::abs(void) const { return sqrtf(x*x + y*y + z*z); }
+Coor Coor::unit(void) const { return (*this)/this->abs(); }
 
 Coor Coor::rotate(const Angle angle) const {
     Coor result = *this;
@@ -67,6 +71,7 @@ int Coor::project(const Camera& camera, const char ch, const float unit, Screen&
 Coor Coor::operator+(const Coor& other) const { return Coor(x + other.x, y + other.y, z + other.z); }
 Coor Coor::operator-(const Coor& other) const { return Coor(x - other.x, y - other.y, z - other.z); }
 Coor Coor::operator*(float scalar) const { return Coor(x * scalar, y * scalar, z * scalar); }
+Coor Coor::operator/(float scalar) const { return Coor(x / scalar, y / scalar, z / scalar); }
 
 // ********************************** /&
 //                Face                //
@@ -104,6 +109,10 @@ Square::Square(const Coor& coor1, const Coor& coor2, const Coor& coor3, char ch)
 int Square::project(const Camera& camera, const float unit, Screen& screen) const {
     int res = 0;
     Coor lastP = coor[2] + (coor[1]-coor[0]);
+
+    float Z = std::max({coor[0].z, coor[1].z, coor[2].z, lastP.z});
+    float fillGap = 0.8 * (Z + camera.depth) / unit;
+
     for (const auto& c : coor) { if (c.project(camera, ch, unit, screen) == -1) { res = -1; } }
     if (lastP.project(camera, ch, unit, screen) == -1) { res = -1; }
     return res;

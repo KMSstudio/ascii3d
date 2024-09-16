@@ -12,6 +12,9 @@ public:
     Coor();
     Coor(float x, float y, float z);
 
+    float abs(void) const;
+    Coor unit(void) const;
+
     Coor rotate(const Angle angle) const;
     Coor rotate(const Coor& center, const Angle angle) const;
     int position(const Screen& screen, const float cameraDepth, const float unit, Coor2d& pos) const;
@@ -21,6 +24,7 @@ public:
     Coor operator+(const Coor& other) const;
     Coor operator-(const Coor& other) const;
     Coor operator*(float scalar) const;
+    Coor operator/(float scalar) const;
 };
 
 class Face {

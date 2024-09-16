@@ -5,6 +5,8 @@
 #include <vector>
 #include "base.hpp"
 
+static void gotoxy(int x, int y);
+
 class Pixel {
 private:
     char ch;
@@ -17,8 +19,8 @@ public:
     
     char get() const;
 
-    int set(const Pixel& pixel);
-    int set(char ch, float depth);
+    int set(const Pixel& pixel, const bool force=0);
+    int set(char ch, float depth, const bool force=0);
 };
 
 class Screen {
@@ -33,12 +35,13 @@ public:
     
     Pixel getPixel(const Coor2d& pos) const;
     char prtPixel(const Coor2d& pos) const;
-    void setPixel(const Coor2d& pos, const Pixel& pixel);
+    void setPixel(const Coor2d& pos, const Pixel& pixel, const bool force=0);
     
     Coor2d getCenter() const;
     Coor2d getSize() const;
 
     int print(const int prtByDepth = 0) const;
+    std::string prtExp() const;
 };
 
 #endif

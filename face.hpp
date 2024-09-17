@@ -39,6 +39,8 @@ public:
     Face(char ch, int coorSize) : ch(ch), coor(coorSize) {}
     virtual ~Face() = default;
 
+    virtual Face* clone() const = 0;
+
     void rotate(const Angle angle);
     void rotate(const Coor& center, const Angle angle);
 
@@ -52,6 +54,8 @@ public:
     Square(char ch=SQ_DEFAULT_CH);
     Square(const Coor& st, const Coor& v0, const Coor& v1, char ch=SQ_DEFAULT_CH);
 
+    virtual Square* clone() const override { return new Square(*this); }
+
     int project(const Camera& camera, const float unit, Screen& screen) const override;
 };
 
@@ -61,6 +65,8 @@ class Triangle : public Face {
 public:
     Triangle(char ch=TR_DEFAULT_CH);
     Triangle(const Coor& st, const Coor& v0, const Coor& v1, char ch=TR_DEFAULT_CH);
+
+    virtual Triangle* clone() const override { return new Triangle(*this); }
 
     int project(const Camera& camera, const float unit, Screen& screen) const override;
 };

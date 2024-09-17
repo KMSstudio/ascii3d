@@ -11,7 +11,11 @@ Body::Body() : center(0, 0, 0) {
     coor[0] = Coor(0, 0, 0);
     coor[1] = Coor(1, 1, 1);
 }
-
+Body::Body(const Body& other) {
+    // DeepCopy
+    coor[0] = other.coor[0]; coor[1] = other.coor[1]; center = other.center;
+    for (Face* f : other.face) { face.push_back(f->clone()); }
+}
 Body::~Body() { for (auto f : face) { delete f; } }
 
 // (0, 0, 0) or this->center
@@ -43,6 +47,15 @@ int Body::project(const Camera& camera, const float unit, Screen& screen) {
     for (auto& f : face) {
         if (f->project(camera, unit, screen) == -1) { res = -1; } }
     return res;
+}
+
+Body& Body::operator=(const Body& other) {
+    if (this != &other) {
+        for (Face* f : face) { delete f; } face.clear();
+        coor[0] = other.coor[0]; coor[1] = other.coor[1]; center = other.center;    // Copy
+        for (Face* f : other.face) { face.push_back(f->clone()); }                  // DeepCopy
+    }
+    return *this;
 }
 
 // ********************************** /&

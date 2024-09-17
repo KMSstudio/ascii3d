@@ -6,15 +6,16 @@
 #include "screen.hpp"
 #include <cmath>
 #include <conio.h>
+#include "windows.h"
 
 class Space {
 public:
-    Body* body[16];       // 공간 내부에 존재하는 입체들
-    Body* showBody[16];   // 보여지는 입체들
-    Camera* camera;       // 공간의 카메라
-    Screen* screen;       // 카메라에 의해 촬영되는 스크린
-    Coor size;            // 공간의 크기
-    float unit;           // 3D -> 2D 변환에 사용되는 상수
+    Body* body[16];
+    Body* showBody[16];
+    Camera* camera;
+    Screen* screen;
+    Coor size;
+    float unit;
 
     Space(const Coor& size);
     ~Space();

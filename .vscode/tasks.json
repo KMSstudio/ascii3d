@@ -13,6 +13,7 @@
                 "${fileDirname}\\camera.cpp",
                 "${fileDirname}\\face.cpp",
                 "${fileDirname}\\body.cpp",
+                "${fileDirname}\\space.cpp",
                 "-g",
                 "-o",
                 // "${fileDirname}\\${fileBasenameNoExtension}.exe"

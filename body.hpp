@@ -14,11 +14,14 @@ protected:
 
 public:
     Body();
+    Body(const Body& other);
     ~Body();
 
     void rotate(const Angle angle, const int byCenter = 0);
     void rotate(const Coor& center, const Angle angle);
     virtual int project(const Camera& camera, const float unit, Screen& screen);
+
+    Body& operator=(const Body& other);
 };
 
 class Cube : public Body {

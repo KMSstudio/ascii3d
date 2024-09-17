@@ -13,12 +13,15 @@ Space::Space(const Coor& size) : size(size), camera(0x0), screen(0x0), unit(0.0f
     }
 }
 Space::~Space() {
+    std::cout << "Destructor started..." << std::endl;
     for (int i = 0; i < 16; ++i) {
-        if (body[i]) delete body[i];
-        if (showBody[i]) delete showBody[i];
+        if (body[i]) { 
+            std::cout << "Destruct body[" << i << "]" << std::endl;
+            delete body[i];
+        }
     }
-    if (camera) delete camera;
-    if (screen) delete screen;
+    if (camera) { std::cout << "Destruct Camera\n"; delete camera; }
+    if (screen) { std::cout << "Destruct Screen\n"; delete screen; }
 }
 
 // Initalizing
@@ -34,7 +37,8 @@ void Space::setCamera(float depth, float minDepth, float maxDepth) {
 int Space::calcUnit() {
     if (!screen || !camera) { return -1; };
     Coor2d screenSize = screen->getSize();
-    unit = sqrt((size.x * size.y) / (2 * screenSize.x * screenSize.y)) * (size.x + camera->depth);
+    unit = sqrtf((screenSize.x * screenSize.y) / (2 * this->size.x * this->size.y)) * (size.x + camera->depth);
+    return 0;
 }
 
 // (private) _move (for Space::show())
@@ -53,6 +57,9 @@ void Space::_move(const char move) {
         case 'l': case 'L': rotation = Angle(0.0f, 0.0f, -angleUnit); break;    // z-rotate
         default: break;
     }
+    for (int i = 0; i < 16; ++i) {
+        if (showBody[i]) { showBody[i]->rotate(rotation); } }
+    return;
 }
 
 // Config
@@ -73,21 +80,38 @@ int Space::make(const Body& newBody, int index) {
 int Space::show() {
     if (!screen || !camera || unit == 0.0f) return -1;
 
-    // Loading
-    for (int i = 0; i < 16; ++i) { showBody[i] = body[i]; }
+    // Load
+    for (int i = 0; i < 16; ++i) {
+        if (body[i]) { showBody[i] = new Body(*body[i]); } }
+    
+    // Print
+    system("cls");
+    screen->clear();
+    for (int i = 0; i < 16; ++i) {
+        if (showBody[i]) { showBody[i]->project(*camera, unit, *screen); } }
+    screen->print();
 
     // Show
     char input;
     for (;;) {
-        // Print
-        screen->clear();
-        for (int i = 0; i < 16; ++i) {
-            if (showBody[i]) { showBody[i]->project(*camera, unit, *screen); } }
-        screen->print();
+        if (_kbhit()) {
+            // Move
+            input = _getch();
+            if (input == 'q' || input == 'Q') { break; }
+            _move(input);
 
-        // Pause & Move
-        input = _getch();
-        if (input == 'q' || input == 'Q') { break; }
+            // Print
+            system("cls");
+            screen->clear();
+            for (int i = 0; i < 16; ++i) {
+                if (showBody[i]) { showBody[i]->project(*camera, unit, *screen); } }
+            std::cout << screen->prtExp() << std::endl;
+            _flushall();
+        }
     }
+
+    // Free
+    for (int i = 0; i < 16; ++i) {
+        if (showBody[i]) { delete showBody[i]; showBody[i] = 0x0; } }
     return 0;
 }

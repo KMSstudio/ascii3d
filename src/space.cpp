@@ -37,7 +37,7 @@ void Space::setCamera(float depth, float minDepth, float maxDepth) {
 int Space::calcUnit() {
     if (!screen || !camera) { return -1; };
     Coor2d screenSize = screen->getSize();
-    unit = sqrtf((screenSize.x * screenSize.y) / (2 * this->size.x * this->size.y)) * (size.x + camera->depth);
+    unit = 0.5 * sqrtf((screenSize.x * screenSize.y / 4) / (this->size.x * this->size.y)) * (size.x + camera->depth);
     return 0;
 }
 

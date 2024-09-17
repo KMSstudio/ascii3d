@@ -4,7 +4,7 @@
 
 int main() {
     // Create Spcae object
-    Space space(Coor(2, 2, 2));
+    Space space(Coor(1, 1, 1));
 
     // Initalize Space
     space.setScreen(Coor2d(100, 100));

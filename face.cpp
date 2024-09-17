@@ -25,6 +25,11 @@ Coor Coor::rotate(const Angle angle) const {
     result.z = -result.y * sinT + result.z * cosT;
     result.y = newY;
 
+    float cosZ = cos(angle.z), sinZ = sin(angle.z);
+    newX = result.x * cosZ - result.y * sinZ;
+    result.y = result.x * sinZ + result.y * cosZ;
+    result.x = newX;
+
     return result;
 }
 

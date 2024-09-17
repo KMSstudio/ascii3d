@@ -15,10 +15,10 @@ public:
 
 class Angle {
 public:
-    float p, t;  // Phi, Theta
+    float p, t, z;  // Phi, Theta, Z-axis
 
     Angle();
-    Angle(float p, float t);
+    Angle(float p, float t, float z=0);
 };
 
 #endif

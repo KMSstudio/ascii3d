@@ -16,4 +16,4 @@ Coor2d::Coor2d(int x, int y) : x(x), y(y) {}
 // *********************************** //
 
 Angle::Angle() : p(0), t(0) {}
-Angle::Angle(float p, float t) : p(p), t(t) {}
+Angle::Angle(float p, float t, float z) : p(p), t(t), z(z) {}

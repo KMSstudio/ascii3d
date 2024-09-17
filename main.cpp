@@ -29,7 +29,7 @@ int main() {
     triangle.rotate(Angle(0.6f, 0.3f));
 
     // Camera, Screen 객체 생성
-    Camera camera(25, 1, 50);  // depth = 5, 최소/최대 depth는 각각 1, 10
+    Camera camera(25, 10, 50);  // depth = 5, 최소/최대 depth는 각각 1, 10
     Screen screen(Coor2d(100, 100));  // 스크린의 크기 (80x40)
     Screen screenXor(Coor2d(100, 100));
 
@@ -65,9 +65,15 @@ int main() {
                     rotation = Angle(0.0f, +0.0f);
                     camera.act('i');
                     break;
-                case 'j':
+                case 'k':
                     rotation = Angle(0.0f, +0.0f);
                     camera.act('j');
+                    break;
+                case 'j':
+                    rotation = Angle(0.0f, 0.0f, +0.25f);
+                    break;
+                case 'l':
+                    rotation = Angle(0.0f, 0.0f, -0.25f);
                     break;
                 case 'q':
                     return 0;
@@ -88,6 +94,7 @@ int main() {
             triangle.project(camera, unit, screenXor);
             // screen.prtXor(screenXor);
             std::cout << screenXor.prtExp() << std::endl;
+            std::cout << camera.depth << std::endl;
         }
     }
 

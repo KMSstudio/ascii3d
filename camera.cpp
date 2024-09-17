@@ -28,12 +28,12 @@ int Camera::act(char move) {
         case 's': case 'S':
             angle.t += unit; break;
         case 'i': case 'I':
-            depth += unit;
-            if (depth > depthMax) { depth = depthMax; }
-            break;
-        case 'j': case 'J':
             depth -= unit;
             if (depth < depthMin) { depth = depthMin; }
+            break;
+        case 'j': case 'J':
+            depth += unit;
+            if (depth > depthMax) { depth = depthMax; }
             break;
         default:
             return 0;

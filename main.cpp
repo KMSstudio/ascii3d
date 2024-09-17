@@ -22,8 +22,8 @@ int main() {
 
     std::string str3 = "=.*@#;";  // 각 면에 다른 문자
     Cube cube3(st-(v1/2), v0/2, v1/2, v2/2, str3);
-    // cube2.rotate(Angle(0.6f, 0.3f));
-    cube3.rotate(Angle(0.6f, 0.3f));
+    cube2.rotate(Angle(0.6f, 0.3f));
+    // cube3.rotate(Angle(0.6f, 0.3f));
 
     Triangle triangle(Coor(0.5, -1, 0.5), Coor(0.5, 0.5, 0), Coor(0, 0.5, 0.5), '@');
     triangle.rotate(Angle(0.6f, 0.3f));

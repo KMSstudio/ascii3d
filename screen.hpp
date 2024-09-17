@@ -21,6 +21,8 @@ public:
 
     int set(const Pixel& pixel, const bool force=0);
     int set(char ch, float depth, const bool force=0);
+
+    void clear();
 };
 
 class Screen {
@@ -36,10 +38,12 @@ public:
     Pixel getPixel(const Coor2d& pos) const;
     char prtPixel(const Coor2d& pos) const;
     void setPixel(const Coor2d& pos, const Pixel& pixel, const bool force=0);
+    void clsPixel(const Coor2d& pos);
     
     Coor2d getCenter() const;
     Coor2d getSize() const;
 
+    void clear();
     int print(const int prtByDepth = 0) const;
     std::string prtExp() const;
 };

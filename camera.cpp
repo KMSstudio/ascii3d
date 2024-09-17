@@ -31,7 +31,7 @@ int Camera::act(char move) {
             depth -= unit;
             if (depth < depthMin) { depth = depthMin; }
             break;
-        case 'j': case 'J':
+        case 'k': case 'K':
             depth += unit;
             if (depth > depthMax) { depth = depthMax; }
             break;

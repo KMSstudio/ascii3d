@@ -62,7 +62,7 @@ void Space::_move(const char move) {
     return;
 }
 
-// Config
+// Make
 
 int Space::make(const Body& newBody, int index) {
     if (index >= 0 && index < 16) {
@@ -78,6 +78,7 @@ int Space::make(const Body& newBody, int index) {
 // Show
 
 int Space::show(int verbose) {
+    int res = 0;
     if (!screen || !camera || unit == 0.0f) return -1;
 
     // Load
@@ -97,7 +98,8 @@ int Space::show(int verbose) {
         if (_kbhit()) {
             // Move
             input = _getch();
-            if (input == 'q' || input == 'Q') { break; }
+            if (input == 'q' || input == 'Q') { res = 0; break; }
+            if (input == 'x' || input == 'X') { res = 1; break; }
             _move(input);
 
             // Print
@@ -116,5 +118,9 @@ int Space::show(int verbose) {
     // Free
     for (int i = 0; i < 16; ++i) {
         if (showBody[i]) { delete showBody[i]; showBody[i] = 0x0; } }
+    return res;
+}
+
+int Space::config() {
     return 0;
 }

@@ -41,10 +41,12 @@ int main() {
     space.make(sqBody, 3);
 
     for (;;) {
-
-        // Space의 물체를 화면에 투영하고 조작 (Show)
-        space.show();
+        // Show
+        if (space.show()) { break; }
         std::cout << "terminal fine. press any key to exit" << std::endl;
+
+        // Config
+        if (space.config()) { break; }
     }
 
     return 0;

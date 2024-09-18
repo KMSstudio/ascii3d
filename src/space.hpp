@@ -29,6 +29,8 @@ private:
 
 public:
     int show(int verbose = 0);
+    int config();
+
     int make(const Body& newBody, int index = -1);
 };
 

@@ -17,7 +17,7 @@ public:
     Body(const Body& other);
     ~Body();
 
-    void rotate(const Angle angle, const int byCenter = 0);
+    void rotate(const Angle& angle, const int byCenter = 0);
     void rotate(const Coor& center, const Angle angle);
     virtual int project(const Camera& camera, const float unit, Screen& screen);
 
@@ -30,6 +30,11 @@ public:
 
 private:
     void _initFace(const Coor& st, const Coor& v0, const Coor& fn, const Coor& v1, const Coor& v2, const std::string& str);
+};
+
+class Facebody : public Body {
+public:
+    Facebody(const Face* face);
 };
 
 #endif

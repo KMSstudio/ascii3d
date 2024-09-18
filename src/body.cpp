@@ -19,7 +19,7 @@ Body::Body(const Body& other) {
 Body::~Body() { for (auto f : face) { delete f; } }
 
 // (0, 0, 0) or this->center
-void Body::rotate(const Angle angle, const int byCenter) {
+void Body::rotate(const Angle& angle, const int byCenter) {
     if (byCenter) {
         for (auto& f : face) { f->rotate(center, angle); }
         coor[0] = coor[0].rotate(center, angle);
@@ -83,3 +83,9 @@ void Cube::_initFace(const Coor& st, const Coor& fn, const Coor& v0, const Coor&
     face.push_back(new Square(fn, -v0, -v2, faceChars[4]));
     face.push_back(new Square(fn, -v1, -v2, faceChars[5]));
 }
+
+// ************************************** /&
+//                Facebody                //
+// ************************************** //
+
+Facebody::Facebody(const Face* face) { this->face.push_back(face->clone()); }

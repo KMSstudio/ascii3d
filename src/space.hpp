@@ -28,7 +28,7 @@ private:
     void _move(const char move);
 
 public:
-    int show();
+    int show(int verbose = 0);
     int make(const Body& newBody, int index = -1);
 };
 

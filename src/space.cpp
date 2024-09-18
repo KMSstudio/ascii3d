@@ -77,7 +77,7 @@ int Space::make(const Body& newBody, int index) {
 
 // Show
 
-int Space::show() {
+int Space::show(int verbose) {
     if (!screen || !camera || unit == 0.0f) return -1;
 
     // Load
@@ -106,6 +106,9 @@ int Space::show() {
             for (int i = 0; i < 16; ++i) {
                 if (showBody[i]) { showBody[i]->project(*camera, unit, *screen); } }
             std::cout << screen->prtExp() << std::endl;
+            if (verbose) { 
+                Coor2d screenSize = screen->getSize();
+                std::cout << "CameraDepth: [" << this->camera->depth << "]  ScreenSize: [" << screenSize.x << ", " << screenSize.y << "] Unit: [" << this->unit << ']'; }
             _flushall();
         }
     }

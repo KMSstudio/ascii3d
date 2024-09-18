@@ -27,17 +27,25 @@ int main() {
 
     std::string str3 = "=.*@#;";
     Cube cube3(st-(v1/2), v0/2, v1/2, v2/2, str3);
-    cube2.rotate(Angle(0.6f, 0.3f));
-    // cube3.rotate(Angle(0.6f, 0.3f));
+    // cube2.rotate(Angle(0.6f, 0.3f));
+    cube3.rotate(Angle(0.6f, 0.3f));
+
+    Square square(Coor(0.5, -1.0, 0.5), (v0/2)+(v1/2), (v1/2)+(v2/2), ')');
+    Facebody sqBody(&square);
+    sqBody.rotate(Angle(0.6f, 0.3f));
 
     // Insert Cube
     space.make(cube1, 0);
     space.make(cube2, 1);
     space.make(cube3, 2);
+    space.make(sqBody, 3);
 
-    // Space의 물체를 화면에 투영하고 조작 (Show)
-    space.show();
-    std::cout << "terminal fine. press any key to exit" << std::endl;
+    for (;;) {
+
+        // Space의 물체를 화면에 투영하고 조작 (Show)
+        space.show();
+        std::cout << "terminal fine. press any key to exit" << std::endl;
+    }
 
     return 0;
 }

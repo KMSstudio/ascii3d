@@ -6,7 +6,11 @@
 #include "screen.hpp"
 #include <cmath>
 #include <conio.h>
+#include <iostream>
+#include <iomanip>
 #include "windows.h"
+
+using namespace std;
 
 class Space {
 public:
@@ -26,6 +30,7 @@ public:
 
 private:
     void _move(const char move);
+    void _config(const char config);
 
 public:
     int show(int verbose = 0);

@@ -16,6 +16,7 @@ float Camera::getDepthMax() const { return depthMax; }
 Angle Camera::getAngle() const { return angle; }
 float Camera::getDepth() const { return depth; }
 
+// Rotate or Zoom in/out camera. (awsd, ik) command is available
 int Camera::act(char move) {
     static const float unit = 3.0;
     switch (move) {

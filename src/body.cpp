@@ -18,7 +18,7 @@ Body::Body(const Body& other) {
 }
 Body::~Body() { for (auto f : face) { delete f; } }
 
-// (0, 0, 0) or this->center
+// Rotate around (0, 0, 0) or this->center
 void Body::rotate(const Angle& angle, const int byCenter) {
     if (byCenter) {
         for (auto& f : face) { f->rotate(center, angle); }
@@ -34,7 +34,7 @@ void Body::rotate(const Angle& angle, const int byCenter) {
     }
 }
 
-// Parameter center
+// Rotate around Param center
 void Body::rotate(const Coor& center, const Angle angle) {
     for (auto& f : face) { f->rotate(center, angle); }
     coor[0] = coor[0].rotate(center, angle);
@@ -42,6 +42,7 @@ void Body::rotate(const Coor& center, const Angle angle) {
     this->center = this->center.rotate(center, angle);
 }
 
+// Project all face to screen
 int Body::project(const Camera& camera, const float unit, Screen& screen) {
     int res = 0;
     for (auto& f : face) {
@@ -49,6 +50,7 @@ int Body::project(const Camera& camera, const float unit, Screen& screen) {
     return res;
 }
 
+// copy. DeepCopy this->face.
 Body& Body::operator=(const Body& other) {
     if (this != &other) {
         for (Face* f : face) { delete f; } face.clear();
@@ -62,6 +64,7 @@ Body& Body::operator=(const Body& other) {
 //                Cube                //
 // ********************************** //
 
+// Cube object that st + av0 + bv1 + cv1. 0 <= a, b, c <= 1. Letter of each face comes from str[0] ~ str[5].
 Cube::Cube(const Coor& st, const Coor& v0, const Coor& v1, const Coor& v2, const std::string& str) {
     Coor fn = st + v0 + v1 + v2;
     _initFace(st, fn, v0, v1, v2, str);
@@ -88,4 +91,5 @@ void Cube::_initFace(const Coor& st, const Coor& fn, const Coor& v0, const Coor&
 //                Facebody                //
 // ************************************** //
 
+// Body object that shown like Face object.
 Facebody::Facebody(const Face* face) { this->face.push_back(face->clone()); }

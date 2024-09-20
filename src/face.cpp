@@ -12,6 +12,7 @@ Coor::Coor(float x, float y, float z) : x(x), y(y), z(z) {}
 float Coor::abs(void) const { return sqrtf(x*x + y*y + z*z); }
 Coor Coor::unit(void) const { return (*this)/this->abs(); }
 
+// Rotate around (0, 0, 0)
 Coor Coor::rotate(const Angle angle) const {
     Coor result = *this;
     float cosP = cos(angle.p), sinP = sin(angle.p);
@@ -33,6 +34,8 @@ Coor Coor::rotate(const Angle angle) const {
     return result;
 }
 
+
+// Rotate around param center
 Coor Coor::rotate(const Coor& center, const Angle angle) const {
     Coor translated = *this;
     translated.x -= center.x;
@@ -48,6 +51,7 @@ Coor Coor::rotate(const Coor& center, const Angle angle) const {
     return rotated;
 }
 
+// Get its 2d position at screen and save the value at param pos
 int Coor::position(const Screen& screen, const float cameraDepth, const float unit, Coor2d& pos) const {
     float depthInv = 1 / (z + cameraDepth);
 
@@ -62,6 +66,7 @@ int Coor::position(const Screen& screen, const float cameraDepth, const float un
     return 0;
 }
 
+// Project itself to screen
 int Coor::project(const Camera& camera, const char ch, const float unit, Screen& screen) const {
     Coor rotated = this->rotate(camera.angle);
     Coor2d pos;
@@ -82,12 +87,15 @@ Coor Coor::operator-() const { return (*this)*(-1); }
 //                Face                //
 // ********************************** //
 
+// Rotate around (0, 0, 0)
 void Face::rotate(const Angle angle) {
     for (auto& c : coor) { c = c.rotate(angle); } }
+// Rotate around param center
 void Face::rotate(const Coor& center, const Angle angle) {
     for (auto& c : coor) { c = c.rotate(center, angle); } }
 //
 
+// Project all of its coor to screen
 int Face::project(const Camera& camera, const float unit, Screen& screen) const {
     int res = 0;
     for (const auto& c : coor) {
@@ -111,6 +119,7 @@ Square::Square(const Coor& st, const Coor& v0, const Coor& v1, char ch) : Face(c
     coor[2] = st + v1;
 }
 
+// Project square to screen
 int Square::project(const Camera& camera, const float unit, Screen& screen) const {
     int res = 0;
 
@@ -152,6 +161,7 @@ Triangle::Triangle(const Coor& st, const Coor& v0, const Coor& v1, char ch) : Fa
     coor[2] = st + v1;
 }
 
+// Project Triangle to screen
 int Triangle::project(const Camera& camera, const float unit, Screen& screen) const {
     int res = 0;
 

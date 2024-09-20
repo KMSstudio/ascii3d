@@ -1,3 +1,6 @@
 # executable files
 .vscode
 .vscode/
+
+*.code-workspace
+ascii3d.code-workspace

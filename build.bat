@@ -13,4 +13,5 @@ rem Step 2: Link the object files to create the executable
 g++ -s obj/main.o obj/base.o obj/screen.o obj/camera.o obj/face.o obj/body.o obj/space.o -o ascii3d
 
 rem Step 3: Run the executable
-rem ascii3d.exe
+@echo on
+ascii3d.exe

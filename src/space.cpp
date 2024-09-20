@@ -29,12 +29,16 @@ Space::~Space() {
 void Space::setScreen(const Coor2d& screenSize) {
     if (screen) delete screen;
     screen = new Screen(screenSize);
+    _calc();
 }
 void Space::setCamera(float depth, float minDepth, float maxDepth) {
     if (camera) delete camera;
     camera = new Camera(depth, minDepth, maxDepth);
+    _calc();
 }
-int Space::calcUnit() {
+
+// (private) _calc (for calculation of unit)
+int Space::_calc() {
     if (!screen || !camera) { return -1; };
     Coor2d screenSize = screen->getSize();
     unit = 0.5 * sqrtf((screenSize.x * screenSize.y / 4) / (this->size.x * this->size.y)) * (size.x + camera->depth);
@@ -62,23 +66,37 @@ void Space::_move(const char move) {
 }
 
 // (private) _config (for Space::config())
-void Space::_config(const char config) {
-    switch (config) {
-        case 'l': case 'L':
+void Space::_config(const string& config) {
+    if (config == "HELP" || config == "H") {
+        cout << left << setw(8) << "HELP" << ": Show available command list" << endl;
+        cout << left << setw(8) << "LIST" << ": Show information about current Space, Camera and Objects" << endl;
+        cout << endl;
+        cout << left << setw(8) << "MAKE" << ": Make new object" << endl;
+        cout << endl;
+        cout << left << setw(16) << "QUIT|SHOW" << ": Quit a config window and start show window" << endl;
+        cout << left << setw(16) << "EXIT|TERM" << ": Exit a program" << endl;
+        cout << endl;
+    }
+    else if (config == "LIST" || config == "L") {
         cout << endl << "< Space  >" << endl;
         cout << left << setw(8) << "Unit: " << unit << endl;
         cout << left << setw(8) << "Size: " << '(' << size.x << ", " << size.y << ", " << size.z << ')' << endl;
         
         cout << endl << "< Camera >" << endl;
         cout << left << setw(20) << "CameraDepth: " << camera->depth << endl;
+        cout << left << setw(20) << "CameraMaxDepth: " << camera->getDepthMax() << endl;
+        cout << left << setw(20) << "CameraMinDepth: " << camera->getDepthMin() << endl;
 
         cout << endl << "< Object >" << endl;
         for(int i = 0; i < 16; i++) {
-            cout << hex << i << ": " << body[i] << endl; }
-        break;
-
-        default: break;
+            cout << hex << i << ": " << left << setw(20) << body[i] << ((i%2)?'\n':' '); }
+        cout << endl;
     }
+    else if (config == "make") {
+
+    }
+    else { cout << "Invalid command: " << config << endl; }
+    return;
 }
 
 // Make
@@ -144,20 +162,18 @@ int Space::config() {int res = 0;
     cout << "Welcome to enter Config station" << endl;
 
     // Loop
-    char input;
+    string input;
     for (;;) {
-        if (_kbhit()) {
-            // Input
-            input = _getch();
-            if (input == 'q' || input == 'Q') { res = 0; break; }
-            if (input == 'x' || input == 'X') { res = 1; break; }
+        // Input
+        cin >> input;
+        for (auto& c: input) { c = toupper(c); }
+        if (input == "SHOW" || input == "QUIT" || input == "Q") { res = 0; break; }
+        if (input == "TERM" || input == "EXIT" || input == "X") { res = 1; break; }
 
-            // Config
-            system("cls");
-            _config(input);
-            cout << "Action " << input << " Readed" << endl;
-            _flushall();
-        }
+        // Config
+        system("cls");
+        _config(input);
+        _flushall();
     }
 
     // Terminate

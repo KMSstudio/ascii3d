@@ -26,11 +26,11 @@ public:
 
     void setScreen(const Coor2d& screenSize);
     void setCamera(float depth, float minDepth, float maxDepth);
-    int calcUnit();
 
 private:
+    int _calc();
     void _move(const char move);
-    void _config(const char config);
+    void _config(const string& config);
 
 public:
     int show(int verbose = 0);

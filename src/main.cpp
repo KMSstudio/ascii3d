@@ -9,7 +9,6 @@ int main() {
     // Initalize Space
     space.setScreen(Coor2d(100, 100));
     space.setCamera(20, 10, 50);  // Camera(depth, minDepth, maxDepth)
-    space.calcUnit();
 
     // Create cube
     Coor st(0, 0, 0);

@@ -31,6 +31,7 @@ private:
     int _calc();
     void _move(const char move);
     void _config(const string& config);
+    void _make(int index = -1);
 
 public:
     int show(int verbose = 0);

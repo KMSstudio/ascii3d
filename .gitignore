@@ -3,4 +3,4 @@
 .vscode/
 
 *.code-workspace
-ascii3d.code-workspace
+src/main.exe

@@ -13,7 +13,7 @@
 using namespace std;
 
 class Space {
-public:
+private:
     Body* body[16];
     Body* showBody[16];
     Camera* camera;
@@ -21,6 +21,7 @@ public:
     Coor size;
     float unit;
 
+public:
     Space(const Coor& size);
     ~Space();
 
@@ -31,7 +32,7 @@ private:
     int _calc();
     void _move(const char move);
     void _config(const string& config);
-    void _make(int index = -1);
+    void _make(int index = -2);
 
 public:
     int show(int verbose = 0);

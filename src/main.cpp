@@ -26,8 +26,8 @@ int main() {
 
     std::string str3 = "=.*@#;";
     Cube cube3(st-(v1/2), v0/2, v1/2, v2/2, str3);
-    // cube2.rotate(Angle(0.6f, 0.3f));
-    cube3.rotate(Angle(0.6f, 0.3f));
+    cube2.rotate(Angle(0.6f, 0.3f));
+    // cube3.rotate(Angle(0.6f, 0.3f));
 
     Square square(Coor(0.5, -1.0, 0.5), (v0/2)+(v1/2), (v1/2)+(v2/2), ')');
     Facebody sqBody(&square);

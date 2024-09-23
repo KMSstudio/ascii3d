@@ -129,7 +129,7 @@ void Space::_make(int index) {
     cout << endl << "< Make   >" << endl;
 
     // Get index
-    if (index == -1) {
+    if (index == -2) {
         cout << endl << "Index" << endl;
         cout << "Index to input (index must be empty, -1 for default slot): "; cin >> index;
         if (body[index]) { cout << "Invalid: body[index] does not empty" << endl; return; }

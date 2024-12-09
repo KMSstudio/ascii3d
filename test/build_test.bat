@@ -1,0 +1,1 @@
+g++ -o unit_test ../src/base.cpp ../src/screen.cpp unit_test.cpp
